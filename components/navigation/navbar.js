@@ -32,7 +32,7 @@ const Navbar = (props) => {
           </li>
         )}
         <li>
-          <Link href="/products?page=1">Products</Link>
+          <Link href="/products/?page=1">Products</Link>
         </li>
         {signedin && (
           <li>

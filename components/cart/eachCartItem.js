@@ -11,7 +11,7 @@ const EachCartItem = (props) => {
       return setError("Qunatity cannot be less than " + -props.quantity);
     }
 
-    fetch("https://realistic-cart-system.herokuapp.com/add-cart", {
+    fetch(`${process.env.URL}/add-cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

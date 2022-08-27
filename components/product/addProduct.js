@@ -13,6 +13,8 @@ const AddProduct = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    if (image.current.files[0] === undefined)
+      return setError("Please attach an image");
 
     const formData = new FormData();
 
@@ -23,7 +25,7 @@ const AddProduct = () => {
     formData.append("description", description.current.value);
     formData.append("company", company.current.value);
 
-    fetch("https://realistic-cart-system.herokuapp.com/add-product", {
+    fetch(`${process.env.URL}/add-product`, {
       method: "POST",
       body: formData,
       headers: {
@@ -62,10 +64,17 @@ const AddProduct = () => {
         <input ref={image} type="file"></input>
         <h3>Price</h3>
         <input ref={price} type="number"></input>
-        <h3>Category</h3>
-        <input ref={category} type="text"></input>
         <h3>Description</h3>
         <input ref={description} type="text"></input>
+        <h3>Category</h3>
+        <select ref={category} name="selectList" defaultValue={""}>
+          <option value="Food">Food</option>{" "}
+          <option value="Electronics">Electronics</option>
+          <option value="Furniture">Furniture</option>
+          <option value="Human">Human</option>
+          <option value="Cloths">Cloths</option>
+          <option value="Education">Education</option>
+        </select>
         <h3>Company</h3>
         <input ref={company} type="text"></input>
 

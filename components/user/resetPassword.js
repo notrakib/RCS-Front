@@ -14,19 +14,15 @@ const ResetPassword = (props) => {
       return setError("Invalid Confirm Password");
     }
 
-    fetch(
-      "https://realistic-cart-system.herokuapp.com/reset-password/" +
-        route.query.token,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: pass.current.value,
-        }),
-      }
-    )
+    fetch(`${process.env.URL}/reset-password/` + route.query.token, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password: pass.current.value,
+      }),
+    })
       .then((res) => {
         return res.json();
       })

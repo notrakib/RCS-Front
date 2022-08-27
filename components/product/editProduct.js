@@ -19,15 +19,11 @@ const EditProduct = (props) => {
   const route = useRouter();
 
   const fetchProduct = useCallback(() => {
-    fetch(
-      "https://realistic-cart-system.herokuapp.com/find-product/" +
-        props.prodId,
-      {
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-        },
-      }
-    )
+    fetch(`${process.env.URL}/find-product/` + props.prodId, {
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+      },
+    })
       .then((res) => {
         return res.json();
       })
@@ -54,17 +50,13 @@ const EditProduct = (props) => {
     formData.append("description", description.current.value);
     formData.append("company", company.current.value);
 
-    fetch(
-      "https://realistic-cart-system.herokuapp.com/edit-product/" +
-        props.prodId,
-      {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-        },
-      }
-    )
+    fetch(`${process.env.URL}/edit-product/` + props.prodId, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+      },
+    })
       .then((res) => {
         return res.json();
       })

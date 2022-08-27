@@ -12,7 +12,7 @@ const Cart = () => {
   }, []);
 
   const OrderHandaler = async () => {
-    fetch("https://realistic-cart-system.herokuapp.com/order", {
+    fetch(`${process.env.URL}/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   const fetchCartitems = async () => {
-    fetch("https://realistic-cart-system.herokuapp.com/all-cart", {
+    fetch(`${process.env.URL}/all-cart`, {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
       },
@@ -64,7 +64,6 @@ const Cart = () => {
       {cartitems.length === 0 && <p>You have no item in your cart</p>}
       {cartitems[0] !== undefined && <h3>Name: {cartitems[0].userId.name}</h3>}
       {!error &&
-        cartitems.length !== 0 &&
         cartitems.map((each) => (
           <EachCartItem
             key={each._id}

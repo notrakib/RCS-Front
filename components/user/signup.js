@@ -16,7 +16,7 @@ const Signup = () => {
       return setError("Invalid Confirm Password");
     }
 
-    fetch("https://realistic-cart-system.herokuapp.com/signup", {
+    fetch(`${process.env.URL}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,6 +25,7 @@ const Signup = () => {
         name: nameRef.current.value,
         email: emailRef.current.value,
         password: passRef.current.value,
+        confirm_password: confirmPassRef.current.value,
       }),
     })
       .then((res) => {

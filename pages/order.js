@@ -10,7 +10,7 @@ const OrderPage = () => {
   }, []);
 
   const fetchOrder = async () => {
-    fetch("https://realistic-cart-system.herokuapp.com/order", {
+    fetch(`${process.env.URL}/order`, {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
       },

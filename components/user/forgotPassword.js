@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    fetch("https://realistic-cart-system.herokuapp.com/forgot-password", {
+    fetch(`${process.env.URL}/forgot-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
