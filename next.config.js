@@ -6,6 +6,6 @@ exports.nextConfig = {
 
 module.exports = {
   env: {
-    URL: "https://realistic-cart-system.vercel.app",
+    URL: "https://realistic-cart-system.herokuapp.com",
   },
 };
