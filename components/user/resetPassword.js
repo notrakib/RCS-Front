@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment, useRef, useState } from "react";
+import classes from "./resetPassword.module.css";
 
 const ResetPassword = (props) => {
   const [error, setError] = useState();
@@ -21,6 +22,7 @@ const ResetPassword = (props) => {
       },
       body: JSON.stringify({
         password: pass.current.value,
+        confirm_password: con_pass.current.value,
       }),
     })
       .then((res) => {
@@ -31,7 +33,7 @@ const ResetPassword = (props) => {
           setError(returnObj.error.message);
           return;
         } else {
-          route.push("/sign-in");
+          route.push("/");
           setError();
         }
       })
@@ -40,17 +42,17 @@ const ResetPassword = (props) => {
 
   return (
     <Fragment>
-      <form>
+      <form className={classes.resetPass}>
         <h1>Enter Password</h1>
         {error && <p>{error}</p>}
-        <div>
-          <h3>Password</h3>
-          <input ref={pass} type="password"></input>
-        </div>
-        <div>
-          <h3>Confirm Password</h3>
-          <input ref={con_pass} type="password"></input>
-        </div>
+
+        <input placeholder="Password" ref={pass} type="password"></input>
+
+        <input
+          placeholder="Confirm Password"
+          ref={con_pass}
+          type="password"
+        ></input>
 
         <button onClick={submitHandler}>Submit</button>
       </form>

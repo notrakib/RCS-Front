@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment, useRef, useState } from "react";
+import classes from "./forgotPassword.module.css";
 
 const ForgotPassword = () => {
   const [error, setError] = useState();
@@ -35,13 +36,11 @@ const ForgotPassword = () => {
 
   return (
     <Fragment>
-      <form>
+      <form className={classes.frgtpass}>
         <h1>Enter Email</h1>
         {error && <p>{error}</p>}
-        <div>
-          <h3>Email</h3>
-          <input ref={emailRef} type="email"></input>
-        </div>
+
+        <input placeholder="Email" ref={emailRef} type="email"></input>
 
         <button onClick={submitHandler}>Submit</button>
       </form>

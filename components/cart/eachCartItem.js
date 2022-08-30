@@ -1,8 +1,12 @@
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { FetchDataCart } from "../../store/cart-slice";
+import Row from "../layout/row";
 
 const EachCartItem = (props) => {
   const [error, setError] = useState();
   const edit = useRef();
+  const dispatch = useDispatch();
 
   const EditHandaler = (event) => {
     event.preventDefault();
@@ -31,21 +35,25 @@ const EachCartItem = (props) => {
           setError(returnObj.error.message);
         } else {
           edit.current.value = "";
+          dispatch(FetchDataCart());
           setError();
         }
       })
       .catch();
   };
   return (
-    <Fragment>
-      <h3>Title: {props.title}</h3>
-      <h3>Price: {props.price}</h3>
-      <h3>Quantity: {props.quantity}</h3>
+    <Row>
       {error && <p>{error}</p>}
-      <input type="number" ref={edit}></input>
-      <button onClick={EditHandaler}>Edit</button>
-      <h3>Total: {props.quantity * props.price}</h3>
-    </Fragment>
+      <h3>#{props.count}</h3>
+      <h3>{props.title}</h3>
+      <h3>{props.price} tK</h3>
+      <h3>{props.quantity}</h3>
+      <div>
+        <input type="number" ref={edit}></input>
+        <button onClick={EditHandaler}>Edit</button>
+      </div>
+      <h3>{props.quantity * props.price} tK</h3>
+    </Row>
   );
 };
 

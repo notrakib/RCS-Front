@@ -1,14 +1,22 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import EachCartItem from "./eachCartItem";
+import Row from "../layout/row";
+import classes from "./cart.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchDataCart } from "../../store/cart-slice";
 
 const Cart = () => {
-  const [cartitems, setCartitems] = useState([]);
   const [error, setError] = useState();
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const error2 = useSelector((state) => state.cart.error);
   const route = useRouter();
+  const dispatch = useDispatch();
+
+  if (error2 !== null) setError(error2);
 
   useEffect(() => {
-    fetchCartitems();
+    dispatch(FetchDataCart());
   }, []);
 
   const OrderHandaler = async () => {
@@ -27,28 +35,8 @@ const Cart = () => {
           return setError(returnObj.error.message);
         } else {
           route.push("/order");
-          setCartitems([]);
+          dispatch(FetchDataCart());
           setError();
-        }
-      })
-      .catch();
-  };
-
-  const fetchCartitems = async () => {
-    fetch(`${process.env.URL}/all-cart`, {
-      headers: {
-        Authorization: "bearer " + localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((returnObj) => {
-        if (returnObj.error) {
-          setError(returnObj.error.message);
-          return;
-        } else {
-          setCartitems(returnObj.cartItems);
         }
       })
       .catch();
@@ -56,31 +44,52 @@ const Cart = () => {
 
   let subTotal = 0;
 
-  cartitems.map((each) => (subTotal += each.total));
+  {
+    cartItems.map((each) => (subTotal += each.total));
+  }
 
   return (
-    <Fragment>
-      {error && <p>{error}</p>}
-      {cartitems.length === 0 && <p>You have no item in your cart</p>}
-      {cartitems[0] !== undefined && <h3>Name: {cartitems[0].userId.name}</h3>}
+    <div className={classes.cart}>
+      <div id={classes.user}>
+        {cartItems.length === 0 && <h2>You have no item in your cart</h2>}
+        {cartItems[0] !== undefined && (
+          <h2>{cartItems[0].userId.name} here is your cart</h2>
+        )}
+      </div>
+
+      {cartItems.length !== 0 && (
+        <Row>
+          <h3>#id</h3>
+          <h3>Product</h3>
+          <h3>Price</h3>
+          <h3>Quantity</h3>
+          <div>
+            <h1></h1>
+            <p>Edit Quantity</p>
+          </div>
+
+          <h3>Total</h3>
+        </Row>
+      )}
       {!error &&
-        cartitems.map((each) => (
+        cartItems.map((each, index) => (
           <EachCartItem
             key={each._id}
             id={each.productId._id}
+            count={index + 1}
             title={each.productId.title}
             price={each.productId.price}
             quantity={each.quantity}
             total={each.total}
           />
         ))}
-      {cartitems.length !== 0 && (
-        <Fragment>
-          <h2>Pay: {subTotal}</h2>
-          <button onClick={OrderHandaler}>Order</button>
-        </Fragment>
+      {cartItems.length !== 0 && (
+        <div id={classes.order}>
+          <p>Bill {subTotal} tK</p>
+          <button onClick={OrderHandaler}>Order Now</button>
+        </div>
       )}
-    </Fragment>
+    </div>
   );
 };
 export default Cart;

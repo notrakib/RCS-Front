@@ -1,5 +1,6 @@
 import { Fragment, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import classes from "./signup.module.css";
 
 const Signup = () => {
   const [error, setError] = useState();
@@ -49,25 +50,22 @@ const Signup = () => {
 
   return (
     <Fragment>
-      <form>
-        <h1>Create an Account</h1>
+      <form className={classes.signup}>
+        <h1>Sign up</h1>
         {error && <p>{error}</p>}
-        <div>
-          <h3>Name</h3>
-          <input ref={nameRef} type="text"></input>
-        </div>
-        <div>
-          <h3>Email</h3>
-          <input ref={emailRef} type="email"></input>
-        </div>
-        <div>
-          <h3>Password</h3>
-          <input ref={passRef} type="password"></input>
-        </div>
-        <div>
-          <h3>Confirm Password</h3>
-          <input ref={confirmPassRef} type="password"></input>
-        </div>
+
+        <input placeholder="Name" ref={nameRef} type="text"></input>
+
+        <input placeholder="Email" ref={emailRef} type="email"></input>
+
+        <input placeholder="Password" ref={passRef} type="password"></input>
+
+        <input
+          placeholder="Confirm Password"
+          ref={confirmPassRef}
+          type="password"
+        ></input>
+
         <button onClick={submitHandler}>Sign up</button>
       </form>
     </Fragment>

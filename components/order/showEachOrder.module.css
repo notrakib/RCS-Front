@@ -1,0 +1,24 @@
+.each div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 96%;
+  height: 30px;
+  margin-left: 2%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border: solid 1px white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 20px;
+}
+
+.each h3 {
+  background-color: rgb(148, 4, 28);
+  width: 96%;
+  margin-left: 2%;
+  color: white;
+  border-radius: 10px;
+  padding-left: 30px;
+}

@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import classes from "./productDetail.module.css";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
@@ -76,18 +77,29 @@ const ProductDetail = () => {
   return (
     <Fragment>
       {product.image && (
-        <Fragment>
-          <h3>Title: {product.title}</h3>
+        <div className={classes.each}>
+          <h2>{product.title}</h2>
           <img src={`${process.env.URL}/${product.image}`} alt="ok"></img>
-          <h3>Price: {product.price}</h3>
-          <h3>Category: {product.category}</h3>
-          <h3>Description: {product.description}</h3>
-          <h3>Company: {product.company}</h3>
+          <h3>Price: {product.price} tK</h3>
+          <h4>Category: {product.category}</h4>
+          <h4>Company: {product.company}</h4>
           {error && <p>{error}</p>}
-          <input ref={qty} min="1" type="number"></input>
-          <button onClick={AddToCartHandaler}>Add to cart</button>
-          <button onClick={EditHandaler}>Edit</button>
-        </Fragment>
+          <p>{product.description}</p>
+          <div>
+            <input
+              placeholder="Quantity"
+              ref={qty}
+              min="1"
+              type="number"
+            ></input>
+            <button id={classes.btn1} onClick={AddToCartHandaler}>
+              Add to Cart
+            </button>
+          </div>
+          <button id={classes.btn2} onClick={EditHandaler}>
+            Edit Product Details
+          </button>
+        </div>
       )}
     </Fragment>
   );

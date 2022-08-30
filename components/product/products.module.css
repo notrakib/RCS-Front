@@ -1,0 +1,36 @@
+.products {
+  display: flex;
+  flex-direction: column;
+  margin: 3%;
+  margin-top: 20px;
+  font-size: 15pt;
+}
+
+.products #each {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.products #filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.products select {
+  margin-left: 20px;
+}
+
+.products #page {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
+  align-items: center;
+  margin-top: 70px;
+  color: blue;
+}
+
+.products p {
+  color: blue;
+}

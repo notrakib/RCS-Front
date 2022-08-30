@@ -1,5 +1,6 @@
 import { Fragment, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import classes from "./addProduct.module.css";
 
 const AddProduct = () => {
   const [error, setError] = useState();
@@ -56,29 +57,46 @@ const AddProduct = () => {
     <Fragment>
       {error && <p>{error}</p>}
 
-      <h1>Add Product</h1>
-      <form onSubmit={submitHandler}>
-        <h3>Title</h3>
-        <input ref={title} type="text"></input>
-        <h3>Image</h3>
-        <input ref={image} type="file"></input>
-        <h3>Price</h3>
-        <input ref={price} type="number"></input>
-        <h3>Description</h3>
-        <input ref={description} type="text"></input>
-        <h3>Category</h3>
-        <select ref={category} name="selectList" defaultValue={""}>
-          <option value="Food">Food</option>{" "}
-          <option value="Electronics">Electronics</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Human">Human</option>
-          <option value="Cloths">Cloths</option>
-          <option value="Education">Education</option>
-        </select>
-        <h3>Company</h3>
-        <input ref={company} type="text"></input>
+      <form className={classes.addProduct} onSubmit={submitHandler}>
+        <h1>Add Product</h1>
+        <div>
+          <h3>Title</h3>
+          <input ref={title} type="text"></input>
+        </div>
 
-        <button>Add</button>
+        <div>
+          <h3>Price</h3>
+          <input ref={price} type="number"></input>
+        </div>
+
+        <div>
+          <h3>Description</h3>
+          <input ref={description} type="text"></input>
+        </div>
+
+        <div>
+          <h3>Category</h3>
+          <select ref={category} name="selectList" defaultValue={""}>
+            <option value="Food">Food</option>{" "}
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Human">Human</option>
+            <option value="Cloths">Cloths</option>
+            <option value="Education">Education</option>
+          </select>
+        </div>
+
+        <div>
+          <h3>Company</h3>
+          <input ref={company} type="text"></input>
+        </div>
+
+        <div>
+          <h3>Image</h3>
+          <input ref={image} type="file"></input>
+        </div>
+
+        <button>Add Product</button>
       </form>
     </Fragment>
   );

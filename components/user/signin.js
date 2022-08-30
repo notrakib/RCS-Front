@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { signedinAction } from "../../store/signin-slice";
 import Link from "next/link";
+import classes from "./signin.module.css";
 
 const Signin = () => {
   const [error, setError] = useState();
@@ -49,26 +50,24 @@ const Signin = () => {
           route.push("/products?page=1");
         }
       })
-      .catch((err) => console.log(err));
+      .catch();
   };
 
   return (
     <Fragment>
-      <form>
+      <form className={classes.signin}>
         <h1>Sign in</h1>
         {error && <p>{error}</p>}
-        <div>
-          <h3>Email</h3>
-          <input ref={emailRef} type="email"></input>
-        </div>
-        <div>
-          <h3>Password</h3>
-          <input ref={passRef} type="password"></input>
-        </div>
-        <Link href="/forgot-password">
-          <p>Forgot password?</p>
-        </Link>
-        <button onClick={submitHandler}>Sign in</button>
+        <input placeholder="Email" ref={emailRef} type="email"></input>
+        <input placeholder="Password" ref={passRef} type="password"></input>
+        <p id={classes.forgot}>
+          <Link id={classes.forgot} href="/forgot-password">
+            Forgot password?
+          </Link>
+        </p>
+        <button onClick={submitHandler} type="submit">
+          Sign in
+        </button>
       </form>
     </Fragment>
   );

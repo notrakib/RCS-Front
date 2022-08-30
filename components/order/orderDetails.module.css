@@ -1,0 +1,42 @@
+.orderD {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderD div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 96%;
+  height: 30px;
+  margin-left: 2%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border: solid 1px white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 20px;
+  text-align: center;
+}
+
+.orderD h3 {
+  background-color: rgb(148, 4, 28);
+  width: 96%;
+  margin-left: 2%;
+  color: white;
+  border-radius: 10px;
+  padding-left: 30px;
+}
+
+.orderD h2 {
+  background-color: rgb(148, 4, 28);
+  width: 20%;
+  align-self: flex-end;
+  margin-right: 30px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}

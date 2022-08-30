@@ -1,0 +1,34 @@
+.nav {
+  background-color: rgb(148, 4, 28);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: aliceblue;
+  height: 70px;
+  font-size: 22pt;
+  font-weight: bolder;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.nav #navLeft {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-self: center;
+}
+
+.nav #navRight {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav #navRight p {
+  margin-right: 5%;
+}
+
+.nav #navLeft p {
+  margin-left: 5%;
+}

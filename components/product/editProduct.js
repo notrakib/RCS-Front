@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import classes from "./addProduct.module.css";
 
 const EditProduct = (props) => {
   const [product, setProduct] = useState({
@@ -86,42 +87,57 @@ const EditProduct = (props) => {
     <Fragment>
       {error && <p>{error}</p>}
 
-      <h1>Edit Product</h1>
-      <form onSubmit={submitHandler}>
-        <h3>Title</h3>
-        <input
-          ref={title}
-          defaultValue={product.title || ""}
-          type="text"
-        ></input>
-        <h3>Image</h3>
-        <input ref={image} type="file"></input>
-        <h3>Price</h3>
-        <input
-          ref={price}
-          defaultValue={product.price || ""}
-          type="number"
-        ></input>
-        <h3>Category</h3>
-        <input
-          ref={category}
-          defaultValue={product.category || ""}
-          type="text"
-        ></input>
-        <h3>Description</h3>
-        <input
-          ref={description}
-          defaultValue={product.description || ""}
-          type="text"
-        ></input>
-        <h3>Company</h3>
-        <input
-          ref={company}
-          defaultValue={product.company || ""}
-          type="text"
-        ></input>
+      <form className={classes.addProduct} onSubmit={submitHandler}>
+        <h1>Edit Product</h1>
+        <div>
+          <h3>Title</h3>
+          <input
+            ref={title}
+            defaultValue={product.title || ""}
+            type="text"
+          ></input>
+        </div>
+        <div>
+          <h3>Price</h3>
+          <input
+            ref={price}
+            defaultValue={product.price || ""}
+            type="number"
+          ></input>
+        </div>
+        <div>
+          <h3>Description</h3>
+          <input
+            ref={description}
+            defaultValue={product.description || ""}
+            type="text"
+          ></input>
+        </div>
+        <div>
+          <h3>Category</h3>
+          <select ref={category} name="selectList" defaultValue={""}>
+            <option value="Food">Food</option>{" "}
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Human">Human</option>
+            <option value="Cloths">Cloths</option>
+            <option value="Education">Education</option>
+          </select>
+        </div>
 
-        <button>Add</button>
+        <div>
+          <h3>Company</h3>
+          <input
+            ref={company}
+            defaultValue={product.company || ""}
+            type="text"
+          ></input>
+        </div>
+        <div>
+          <h3>Image</h3>
+          <input ref={image} type="file"></input>
+        </div>
+        <button>Edit Product Details</button>
       </form>
     </Fragment>
   );
