@@ -1,12 +1,12 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { signedinAction } from "../../store/signin-slice";
 import Link from "next/link";
 import classes from "./signin.module.css";
+import { Popup } from "../../store/popup-slice";
 
 const Signin = () => {
-  const [error, setError] = useState();
   const emailRef = useRef();
   const passRef = useRef();
   const route = useRouter();
@@ -30,7 +30,7 @@ const Signin = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           emailRef.current.value = "";
@@ -48,6 +48,7 @@ const Signin = () => {
           }, returnObj.userInfo.logoutTime - +new Date());
 
           route.push("/products?page=1");
+          dispatch(Popup({ error: false, message: "Login Successful" }));
         }
       })
       .catch();
@@ -57,7 +58,6 @@ const Signin = () => {
     <Fragment>
       <form className={classes.signin}>
         <h1>Sign in</h1>
-        {error && <p>{error}</p>}
         <input placeholder="Email" ref={emailRef} type="email"></input>
         <input placeholder="Password" ref={passRef} type="password"></input>
         <p id={classes.forgot}>

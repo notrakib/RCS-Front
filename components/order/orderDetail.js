@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./orderDetails.module.css";
 
 const OrderDetail = () => {
   const [order, setOrder] = useState({});
   const route = useRouter();
-  console.log(route.query.orderId);
+  const dispatch = useDispatch();
 
   const fetchOrder = () => {
     fetch(`${process.env.URL}/orderDetails/${route.query.orderId}`, {
@@ -18,19 +20,38 @@ const OrderDetail = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           setOrder(returnObj.order);
         }
       })
-      .catch((err) => console.log(err));
+      .catch();
   };
 
   useEffect(() => {
     if (route.query.orderId === undefined) return;
     fetchOrder();
   }, [route.query.orderId]);
+
+  // const InvoiceHandaler = () => {
+  //   fetch(`${process.env.URL}/order/${route.query.orderId}`, {
+  //     headers: {
+  //       Authorization: "bearer " + localStorage.getItem("token"),
+  //       Accept: "application/pdf",
+  //     },
+  //   })
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((returnObj) => {
+  //       if (returnObj.error)
+  //         dispatch(Popup({ error: true, message: returnObj.error.message }));
+
+  //       return;
+  //     })
+  //     .catch();
+  // };
 
   return (
     <div className={classes.orderD}>
@@ -45,6 +66,7 @@ const OrderDetail = () => {
           </div>
         ))}
       <h2>Total: {order.subTotal}</h2>
+      <button>Get Invoice</button>
     </div>
   );
 };

@@ -7,5 +7,6 @@ exports.nextConfig = {
 module.exports = {
   env: {
     URL: "https://realistic-cart-system.herokuapp.com",
+    // URL: "http://localhost:8080",
   },
 };

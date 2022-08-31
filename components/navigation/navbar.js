@@ -4,15 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { signedinAction } from "../../store/signin-slice";
 import Link from "next/link";
 import classes from "../navigation/navbar.module.css";
+import Slide from "../layout/slide";
+import { popUpAction } from "../../store/popup-slice";
 
 const Navbar = (props) => {
   const signedin = useSelector((state) => state.signin.signedin);
+  const popup = useSelector((state) => state.popup);
   const dispatch = useDispatch();
   const route = useRouter();
 
   const submitHandler = (event) => {
     event.preventDefault();
     props.onClick();
+  };
+
+  const HidePopUp = () => {
+    dispatch(popUpAction.refresh());
   };
 
   const LogoutHandaler = (event) => {
@@ -23,6 +30,13 @@ const Navbar = (props) => {
 
   return (
     <Fragment>
+      {popup.error !== null && (
+        <Slide
+          onClick={HidePopUp}
+          error={popup.error}
+          message={popup.message}
+        ></Slide>
+      )}
       <div className={classes.nav}>
         <div id={classes.navLeft}>
           <p>

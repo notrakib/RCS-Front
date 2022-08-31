@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./addProduct.module.css";
 
 const EditProduct = (props) => {
@@ -10,7 +12,6 @@ const EditProduct = (props) => {
     description: "",
     company: "",
   });
-  const [error, setError] = useState();
   const title = useRef();
   const image = useRef();
   const price = useRef();
@@ -18,6 +19,7 @@ const EditProduct = (props) => {
   const description = useRef();
   const company = useRef();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const fetchProduct = useCallback(() => {
     fetch(`${process.env.URL}/find-product/` + props.prodId, {
@@ -30,10 +32,11 @@ const EditProduct = (props) => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          return setError(returnObj.error.message);
+          return dispatch(
+            Popup({ error: true, message: returnObj.error.message })
+          );
         } else {
           setProduct(returnObj.product);
-          setError();
         }
       })
       .catch();
@@ -63,7 +66,7 @@ const EditProduct = (props) => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           title.current.value = "";
@@ -73,7 +76,12 @@ const EditProduct = (props) => {
           description.current.value = "";
           company.current.value = "";
           route.push("/products?page=1");
-          setError();
+          dispatch(
+            Popup({
+              error: false,
+              message: "Product has been edited successfully",
+            })
+          );
         }
       })
       .catch();
@@ -85,8 +93,6 @@ const EditProduct = (props) => {
 
   return (
     <Fragment>
-      {error && <p>{error}</p>}
-
       <form className={classes.addProduct} onSubmit={submitHandler}>
         <h1>Edit Product</h1>
         <div>

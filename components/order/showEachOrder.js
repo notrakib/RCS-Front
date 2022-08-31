@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import classes from "./showEachOrder.module.css";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 
 const ShowEachOrder = () => {
   const [orders, setOrders] = useState([]);
-  const [error, setError] = useState();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchOrder();
@@ -22,7 +24,7 @@ const ShowEachOrder = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           setOrders(returnObj.orders);

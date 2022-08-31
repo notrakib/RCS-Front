@@ -32,11 +32,23 @@
 }
 
 .orderD h2 {
-  background-color: rgb(148, 4, 28);
+  background-color: rgb(2, 131, 60);
   width: 20%;
   align-self: flex-end;
   margin-right: 30px;
-  border-radius: 10px;
   color: white;
   text-align: center;
+}
+
+.orderD button {
+  align-self: flex-end;
+  width: 10%;
+  height: 35px;
+  border: 0px;
+  background-color: rgb(2, 131, 60);
+  color: aliceblue;
+  font-weight: bolder;
+  font-size: 18pt;
+  cursor: pointer;
+  margin-right: 30px;
 }

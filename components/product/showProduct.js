@@ -2,13 +2,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ShowEachProduct from "./showEachProduct";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./products.module.css";
 
 const ShowProduct = (props) => {
   const [products, setProducts] = useState({ products: [] });
-  const [error, setError] = useState();
   const category = useRef("");
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const array = [1, 2, 3, 4];
 
@@ -27,7 +29,7 @@ const ShowProduct = (props) => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           setProducts(returnObj);
@@ -60,18 +62,17 @@ const ShowProduct = (props) => {
           <option value="Education">Education</option>
         </select>
       </div>
-      {error && <p>{error}</p>}
+
       <div id={classes.each}>
-        {!error &&
-          products.products.map((each) => (
-            <ShowEachProduct
-              key={each._id}
-              id={each._id}
-              title={each.title}
-              price={each.price}
-              category={each.category}
-            />
-          ))}
+        {products.products.map((each) => (
+          <ShowEachProduct
+            key={each._id}
+            id={each._id}
+            title={each.title}
+            price={each.price}
+            category={each.category}
+          />
+        ))}
       </div>
       <div id={classes.page}>
         Page(

@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { FetchDataCart } from "../../store/cart-slice";
 import Row from "../layout/row";
+import { Popup } from "../../store/popup-slice";
 
 const EachCartItem = (props) => {
-  const [error, setError] = useState();
   const edit = useRef();
   const dispatch = useDispatch();
 
@@ -12,7 +12,12 @@ const EachCartItem = (props) => {
     event.preventDefault();
 
     if (edit.current.value < -props.quantity) {
-      return setError("Qunatity cannot be less than " + -props.quantity);
+      return dispatch(
+        Popup({
+          error: true,
+          message: "Qunatity cannot be less than " + -props.quantity,
+        })
+      );
     }
 
     fetch(`${process.env.URL}/add-cart`, {
@@ -32,18 +37,22 @@ const EachCartItem = (props) => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
         } else {
           edit.current.value = "";
           dispatch(FetchDataCart());
-          setError();
+          dispatch(
+            Popup({
+              error: false,
+              message: "Quantity has been edited successfully",
+            })
+          );
         }
       })
       .catch();
   };
   return (
     <Row>
-      {error && <p>{error}</p>}
       <h3>#{props.count}</h3>
       <h3>{props.title}</h3>
       <h3>{props.price} tK</h3>

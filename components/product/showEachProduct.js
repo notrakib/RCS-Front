@@ -1,17 +1,19 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./showEachProduct.module.css";
 
 const ShowEachProduct = (props) => {
-  const [error, setError] = useState();
   const signedin = useSelector((state) => state.signin.signedin);
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const DetailHandaler = (event) => {
     event.preventDefault();
 
-    if (!signedin) return setError("Please sign in");
+    if (!signedin)
+      return dispatch(Popup({ error: true, message: "Please sigin" }));
     route.push(`/product-detail/${props.id}`);
   };
 
@@ -22,7 +24,6 @@ const ShowEachProduct = (props) => {
         <h4>Category: {props.category}</h4>
         <h4>Price: {props.price} tK</h4>
 
-        {error && <p>{error}</p>}
         <button onClick={DetailHandaler}>View Details</button>
       </div>
     </Fragment>

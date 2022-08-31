@@ -1,14 +1,16 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./productDetail.module.css";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
-  const [error, setError] = useState();
   const userId = useSelector((state) => state.signin.userId);
   const qty = useRef();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const fetchProduct = useCallback(() => {
     fetch(`${process.env.URL}/find-product/${route.query.prodId}`, {
@@ -21,10 +23,11 @@ const ProductDetail = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          return setError(returnObj.error.message);
+          return dispatch(
+            Popup({ error: true, message: returnObj.error.message })
+          );
         } else {
           setProduct(returnObj.product);
-          setError();
         }
       })
       .catch();
@@ -41,7 +44,9 @@ const ProductDetail = () => {
     event.preventDefault();
 
     if (qty.current.value < 1) {
-      return setError("Qunatity cannot be less than 1");
+      return dispatch(
+        Popup({ error: true, message: "Qunatity cannot be less than 1" })
+      );
     }
 
     fetch(`${process.env.URL}/add-cart`, {
@@ -61,10 +66,12 @@ const ProductDetail = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
         } else {
           qty.current.value = "";
-          setError();
+          dispatch(
+            Popup({ error: false, message: "Item has been added to cart" })
+          );
         }
       })
       .catch();
@@ -83,7 +90,7 @@ const ProductDetail = () => {
           <h3>Price: {product.price} tK</h3>
           <h4>Category: {product.category}</h4>
           <h4>Company: {product.company}</h4>
-          {error && <p>{error}</p>}
+
           <p>{product.description}</p>
           <div>
             <input

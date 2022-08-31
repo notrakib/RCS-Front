@@ -1,9 +1,10 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./addProduct.module.css";
 
 const AddProduct = () => {
-  const [error, setError] = useState();
   const title = useRef();
   const image = useRef();
   const price = useRef();
@@ -11,6 +12,7 @@ const AddProduct = () => {
   const description = useRef();
   const company = useRef();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -38,7 +40,9 @@ const AddProduct = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          return setError(returnObj.error.message);
+          return dispatch(
+            Popup({ error: true, message: returnObj.error.message })
+          );
         } else {
           title.current.value = "";
           image.current.value = null;
@@ -47,7 +51,12 @@ const AddProduct = () => {
           description.current.value = "";
           company.current.value = "";
           route.push("/products?page=1");
-          setError();
+          dispatch(
+            Popup({
+              error: false,
+              message: "Product has been added successfully",
+            })
+          );
         }
       })
       .catch();
@@ -55,8 +64,6 @@ const AddProduct = () => {
 
   return (
     <Fragment>
-      {error && <p>{error}</p>}
-
       <form className={classes.addProduct} onSubmit={submitHandler}>
         <h1>Add Product</h1>
         <div>

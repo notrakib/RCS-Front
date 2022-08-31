@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import EachCartItem from "./eachCartItem";
 import Row from "../layout/row";
 import classes from "./cart.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchDataCart } from "../../store/cart-slice";
+import { Popup } from "../../store/popup-slice";
 
 const Cart = () => {
-  const [error, setError] = useState();
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const error2 = useSelector((state) => state.cart.error);
+  const error = useSelector((state) => state.cart.error);
   const route = useRouter();
   const dispatch = useDispatch();
 
-  if (error2 !== null) setError(error2);
+  if (error !== null)
+    dispatch(Popup({ error: true, message: returnObj.error.message }));
 
   useEffect(() => {
     dispatch(FetchDataCart());
@@ -32,11 +33,13 @@ const Cart = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          return setError(returnObj.error.message);
+          return dispatch(
+            Popup({ error: true, message: returnObj.error.message })
+          );
         } else {
           route.push("/order");
+          dispatch(Popup({ error: false, message: "Order Accepted" }));
           dispatch(FetchDataCart());
-          setError();
         }
       })
       .catch();
@@ -71,18 +74,17 @@ const Cart = () => {
           <h3>Total</h3>
         </Row>
       )}
-      {!error &&
-        cartItems.map((each, index) => (
-          <EachCartItem
-            key={each._id}
-            id={each.productId._id}
-            count={index + 1}
-            title={each.productId.title}
-            price={each.productId.price}
-            quantity={each.quantity}
-            total={each.total}
-          />
-        ))}
+      {cartItems.map((each, index) => (
+        <EachCartItem
+          key={each._id}
+          id={each.productId._id}
+          count={index + 1}
+          title={each.productId.title}
+          price={each.productId.price}
+          quantity={each.quantity}
+          total={each.total}
+        />
+      ))}
       {cartItems.length !== 0 && (
         <div id={classes.order}>
           <p>Bill {subTotal} tK</p>

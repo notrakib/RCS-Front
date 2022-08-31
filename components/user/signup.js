@@ -1,14 +1,16 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./signup.module.css";
 
 const Signup = () => {
-  const [error, setError] = useState();
   const nameRef = useRef();
   const emailRef = useRef();
   const passRef = useRef();
   const confirmPassRef = useRef();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -34,15 +36,15 @@ const Signup = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           nameRef.current.value = "";
           emailRef.current.value = "";
           passRef.current.value = "";
           confirmPassRef.current.value = "";
-          route.push("/sign-in");
-          setError();
+          route.push("/");
+          dispatch(Popup({ error: false, message: "Account created" }));
         }
       })
       .catch();
@@ -52,7 +54,6 @@ const Signup = () => {
     <Fragment>
       <form className={classes.signup}>
         <h1>Sign up</h1>
-        {error && <p>{error}</p>}
 
         <input placeholder="Name" ref={nameRef} type="text"></input>
 

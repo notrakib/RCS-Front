@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { Popup } from "../../store/popup-slice";
 import classes from "./forgotPassword.module.css";
 
 const ForgotPassword = () => {
-  const [error, setError] = useState();
   const emailRef = useRef();
   const route = useRouter();
+  const dispatch = useDispatch();
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -24,11 +26,10 @@ const ForgotPassword = () => {
       })
       .then((returnObj) => {
         if (returnObj.error) {
-          setError(returnObj.error.message);
+          dispatch(Popup({ error: true, message: returnObj.error.message }));
           return;
         } else {
           route.push(returnObj.link);
-          setError();
         }
       })
       .catch();
@@ -38,7 +39,6 @@ const ForgotPassword = () => {
     <Fragment>
       <form className={classes.frgtpass}>
         <h1>Enter Email</h1>
-        {error && <p>{error}</p>}
 
         <input placeholder="Email" ref={emailRef} type="email"></input>
 
