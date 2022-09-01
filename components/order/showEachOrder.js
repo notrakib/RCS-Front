@@ -31,7 +31,7 @@ const ShowEachOrder = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, [localStorage.getItem("token")]);
+  }, []);
 
   return (
     <div className={classes.each}>

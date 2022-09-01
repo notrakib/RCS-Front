@@ -43,7 +43,7 @@ const Cart = () => {
         }
       })
       .catch();
-  }, [localStorage.getItem("token")]);
+  }, []);
 
   let subTotal = 0;
 

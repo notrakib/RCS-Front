@@ -27,7 +27,7 @@ const OrderDetail = () => {
         }
       })
       .catch();
-  }, [route.query.orderId, localStorage.getItem("token")]);
+  }, [route.query.orderId]);
 
   useEffect(() => {
     if (route.query.orderId === undefined) return;

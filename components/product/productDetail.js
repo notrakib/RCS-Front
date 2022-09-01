@@ -72,7 +72,7 @@ const ProductDetail = () => {
         }
       })
       .catch();
-  }, [localStorage.getItem("token"), product]);
+  }, [product]);
 
   useEffect(() => {
     fetchProduct();

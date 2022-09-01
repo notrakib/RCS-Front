@@ -14,58 +14,55 @@ const AddProduct = () => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const submitHandler = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (image.current.files[0] === undefined)
-        return dispatch(
-          Popup({ error: true, message: "Please attach an image" })
-        );
+  const submitHandler = useCallback((event) => {
+    event.preventDefault();
+    if (image.current.files[0] === undefined)
+      return dispatch(
+        Popup({ error: true, message: "Please attach an image" })
+      );
 
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("title", title.current.value);
-      formData.append("image", image.current.files[0]);
-      formData.append("price", price.current.value);
-      formData.append("category", category.current.value);
-      formData.append("description", description.current.value);
-      formData.append("company", company.current.value);
+    formData.append("title", title.current.value);
+    formData.append("image", image.current.files[0]);
+    formData.append("price", price.current.value);
+    formData.append("category", category.current.value);
+    formData.append("description", description.current.value);
+    formData.append("company", company.current.value);
 
-      fetch(`${process.env.URL}/add-product`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-        },
+    fetch(`${process.env.URL}/add-product`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        return res.json();
       })
-        .then((res) => {
-          return res.json();
-        })
-        .then((returnObj) => {
-          if (returnObj.error) {
-            return dispatch(
-              Popup({ error: true, message: returnObj.error.message })
-            );
-          } else {
-            title.current.value = "";
-            image.current.value = null;
-            price.current.value = "";
-            category.current.value = "";
-            description.current.value = "";
-            company.current.value = "";
-            route.push("/products?page=1");
-            dispatch(
-              Popup({
-                error: false,
-                message: "Product has been added successfully",
-              })
-            );
-          }
-        })
-        .catch();
-    },
-    [localStorage.getItem("token")]
-  );
+      .then((returnObj) => {
+        if (returnObj.error) {
+          return dispatch(
+            Popup({ error: true, message: returnObj.error.message })
+          );
+        } else {
+          title.current.value = "";
+          image.current.value = null;
+          price.current.value = "";
+          category.current.value = "";
+          description.current.value = "";
+          company.current.value = "";
+          route.push("/products?page=1");
+          dispatch(
+            Popup({
+              error: false,
+              message: "Product has been added successfully",
+            })
+          );
+        }
+      })
+      .catch();
+  }, []);
 
   return (
     <Fragment>

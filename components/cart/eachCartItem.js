@@ -48,7 +48,7 @@ const EachCartItem = (props) => {
         }
       })
       .catch();
-  }, [props, localStorage.getItem("token")]);
+  }, [props]);
 
   return (
     <Row>

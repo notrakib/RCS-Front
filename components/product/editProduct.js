@@ -93,7 +93,7 @@ const EditProduct = (props) => {
         })
         .catch();
     },
-    [localStorage.getItem("token"), props]
+    [props]
   );
 
   useEffect(() => {
