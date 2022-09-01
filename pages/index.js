@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import Welcome from "../components/others/welcome";
 import Head from "next/head";
 
@@ -17,4 +17,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default React.memo(Index);
