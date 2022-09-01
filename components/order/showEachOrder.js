@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import classes from "./showEachOrder.module.css";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,7 @@ const ShowEachOrder = () => {
     fetchOrder();
   }, []);
 
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(() => {
     fetch(`${process.env.URL}/order`, {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
@@ -31,7 +31,7 @@ const ShowEachOrder = () => {
         }
       })
       .catch((err) => console.log(err));
-  };
+  }, [localStorage.getItem("token")]);
 
   return (
     <div className={classes.each}>
@@ -41,8 +41,7 @@ const ShowEachOrder = () => {
       )}
       {orders.map((each) => (
         <div
-          onClick={(event) => {
-            event.preventDefault();
+          onClick={() => {
             route.push(`/order-details/${each._id}`);
           }}
           key={each._id}
@@ -54,4 +53,4 @@ const ShowEachOrder = () => {
     </div>
   );
 };
-export default ShowEachOrder;
+export default React.memo(ShowEachOrder);

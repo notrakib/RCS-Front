@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { Popup } from "../../store/popup-slice";
 import classes from "./addProduct.module.css";
@@ -42,50 +48,53 @@ const EditProduct = (props) => {
       .catch();
   }, [props.prodId]);
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
+  const submitHandler = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    formData.append("title", title.current.value);
-    formData.append("image", image.current.files[0]);
-    formData.append("price", price.current.value);
-    formData.append("category", category.current.value);
-    formData.append("description", description.current.value);
-    formData.append("company", company.current.value);
+      formData.append("title", title.current.value);
+      formData.append("image", image.current.files[0]);
+      formData.append("price", price.current.value);
+      formData.append("category", category.current.value);
+      formData.append("description", description.current.value);
+      formData.append("company", company.current.value);
 
-    fetch(`${process.env.URL}/edit-product/` + props.prodId, {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: "bearer " + localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        return res.json();
+      fetch(`${process.env.URL}/edit-product/` + props.prodId, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
       })
-      .then((returnObj) => {
-        if (returnObj.error) {
-          dispatch(Popup({ error: true, message: returnObj.error.message }));
-          return;
-        } else {
-          title.current.value = "";
-          image.current.value = null;
-          price.current.value = "";
-          category.current.value = "";
-          description.current.value = "";
-          company.current.value = "";
-          route.push("/products?page=1");
-          dispatch(
-            Popup({
-              error: false,
-              message: "Product has been edited successfully",
-            })
-          );
-        }
-      })
-      .catch();
-  };
+        .then((res) => {
+          return res.json();
+        })
+        .then((returnObj) => {
+          if (returnObj.error) {
+            dispatch(Popup({ error: true, message: returnObj.error.message }));
+            return;
+          } else {
+            title.current.value = "";
+            image.current.value = null;
+            price.current.value = "";
+            category.current.value = "";
+            description.current.value = "";
+            company.current.value = "";
+            route.push("/products?page=1");
+            dispatch(
+              Popup({
+                error: false,
+                message: "Product has been edited successfully",
+              })
+            );
+          }
+        })
+        .catch();
+    },
+    [localStorage.getItem("token"), props]
+  );
 
   useEffect(() => {
     fetchProduct();
@@ -149,4 +158,4 @@ const EditProduct = (props) => {
   );
 };
 
-export default EditProduct;
+export default React.memo(EditProduct);

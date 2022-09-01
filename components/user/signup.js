@@ -1,4 +1,4 @@
-import { Fragment, useRef } from "react";
+import React, { Fragment, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Popup } from "../../store/popup-slice";
@@ -12,7 +12,7 @@ const Signup = () => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const submitHandler = (event) => {
+  const submitHandler = useCallback((event) => {
     event.preventDefault();
 
     if (passRef.current.value !== confirmPassRef.current.value) {
@@ -48,7 +48,7 @@ const Signup = () => {
         }
       })
       .catch();
-  };
+  }, []);
 
   return (
     <Fragment>
@@ -73,4 +73,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default React.memo(Signup);

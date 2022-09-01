@@ -1,18 +1,18 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import classes from "./modal.module.css";
 
-const Underlay = (props) => {
+const Underlay = React.memo((props) => {
   return <div className={classes.backdrop} onClick={props.onClick}></div>;
-};
+});
 
-const Overlay = (props) => {
+const Overlay = React.memo((props) => {
   return (
     <div className={classes.modal}>
       {props.children}
       <button onClick={props.onClick}>Close</button>
     </div>
   );
-};
+});
 
 const Modal = (props) => {
   return (
@@ -26,4 +26,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default React.memo(Modal);

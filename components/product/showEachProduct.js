@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Popup } from "../../store/popup-slice";
@@ -9,14 +9,6 @@ const ShowEachProduct = (props) => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const DetailHandaler = (event) => {
-    event.preventDefault();
-
-    if (!signedin)
-      return dispatch(Popup({ error: true, message: "Please sigin" }));
-    route.push(`/product-detail/${props.id}`);
-  };
-
   return (
     <Fragment>
       <div className={classes.each}>
@@ -24,10 +16,18 @@ const ShowEachProduct = (props) => {
         <h4>Category: {props.category}</h4>
         <h4>Price: {props.price} tK</h4>
 
-        <button onClick={DetailHandaler}>View Details</button>
+        <button
+          onClick={() => {
+            if (!signedin)
+              return dispatch(Popup({ error: true, message: "Please sigin" }));
+            route.push(`/product-detail/${props.id}`);
+          }}
+        >
+          View Details
+        </button>
       </div>
     </Fragment>
   );
 };
 
-export default ShowEachProduct;
+export default React.memo(ShowEachProduct);

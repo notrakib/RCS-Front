@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { signedinAction } from "../../store/signin-slice";
@@ -13,26 +13,13 @@ const Navbar = (props) => {
   const dispatch = useDispatch();
   const route = useRouter();
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    props.onClick();
-  };
-
-  const HidePopUp = () => {
-    dispatch(popUpAction.refresh());
-  };
-
-  const LogoutHandaler = (event) => {
-    event.preventDefault();
-    dispatch(signedinAction.logout());
-    route.push("/");
-  };
-
   return (
     <Fragment>
       {popup.error !== null && (
         <Slide
-          onClick={HidePopUp}
+          onClick={() => {
+            dispatch(popUpAction.refresh());
+          }}
           error={popup.error}
           message={popup.message}
         ></Slide>
@@ -64,12 +51,29 @@ const Navbar = (props) => {
               <Link href="/sign-up">Sign up</Link>
             </p>
           )}
-          {signedin && <p onClick={submitHandler}>Cart</p>}
-          {signedin && <p onClick={LogoutHandaler}>Logout</p>}
+          {signedin && (
+            <p
+              onClick={() => {
+                props.onClick();
+              }}
+            >
+              Cart
+            </p>
+          )}
+          {signedin && (
+            <p
+              onClick={() => {
+                dispatch(signedinAction.logout());
+                route.push("/");
+              }}
+            >
+              Logout
+            </p>
+          )}
         </div>
       </div>
     </Fragment>
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

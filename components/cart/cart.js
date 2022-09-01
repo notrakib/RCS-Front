@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import EachCartItem from "./eachCartItem";
 import Row from "../layout/row";
@@ -20,7 +20,7 @@ const Cart = () => {
     dispatch(FetchDataCart());
   }, []);
 
-  const OrderHandaler = async () => {
+  const OrderHandaler = useCallback(() => {
     fetch(`${process.env.URL}/order`, {
       method: "POST",
       headers: {
@@ -43,7 +43,7 @@ const Cart = () => {
         }
       })
       .catch();
-  };
+  }, [localStorage.getItem("token")]);
 
   let subTotal = 0;
 
@@ -94,4 +94,4 @@ const Cart = () => {
     </div>
   );
 };
-export default Cart;
+export default React.memo(Cart);

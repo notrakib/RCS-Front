@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { FetchDataCart } from "../../store/cart-slice";
 import Row from "../layout/row";
@@ -8,9 +8,7 @@ const EachCartItem = (props) => {
   const edit = useRef();
   const dispatch = useDispatch();
 
-  const EditHandaler = (event) => {
-    event.preventDefault();
-
+  const EditHandaler = useCallback(() => {
     if (edit.current.value < -props.quantity) {
       return dispatch(
         Popup({
@@ -50,7 +48,8 @@ const EachCartItem = (props) => {
         }
       })
       .catch();
-  };
+  }, [props, localStorage.getItem("token")]);
+
   return (
     <Row>
       <h3>#{props.count}</h3>
@@ -66,4 +65,4 @@ const EachCartItem = (props) => {
   );
 };
 
-export default EachCartItem;
+export default React.memo(EachCartItem);

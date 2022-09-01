@@ -1,4 +1,4 @@
-import { Fragment, useRef } from "react";
+import React, { Fragment, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { signedinAction } from "../../store/signin-slice";
@@ -12,9 +12,8 @@ const Signin = () => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const submitHandler = (event) => {
+  const submitHandler = useCallback((event) => {
     event.preventDefault();
-
     fetch(`${process.env.URL}/login`, {
       method: "POST",
       headers: {
@@ -52,7 +51,7 @@ const Signin = () => {
         }
       })
       .catch();
-  };
+  }, []);
 
   return (
     <Fragment>
@@ -73,4 +72,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default React.memo(Signin);

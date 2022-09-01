@@ -1,12 +1,7 @@
-import { Fragment } from "react";
 import ForgotPassword from "../components/user/forgotPassword";
 
 const ForgotPasswordPage = () => {
-  return (
-    <Fragment>
-      <ForgotPassword />
-    </Fragment>
-  );
+  return <ForgotPassword />;
 };
 
 export default ForgotPasswordPage;

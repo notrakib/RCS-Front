@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Fragment, useRef } from "react";
+import React, { Fragment, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Popup } from "../../store/popup-slice";
 import classes from "./forgotPassword.module.css";
@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const submitHandler = (event) => {
+  const submitHandler = useCallback((event) => {
     event.preventDefault();
 
     fetch(`${process.env.URL}/forgot-password`, {
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
         }
       })
       .catch();
-  };
+  }, []);
 
   return (
     <Fragment>
@@ -48,4 +48,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default React.memo(ForgotPassword);

@@ -1,4 +1,10 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -33,16 +39,7 @@ const ProductDetail = () => {
       .catch();
   }, [route.query.prodId]);
 
-  const EditHandaler = (event) => {
-    event.preventDefault();
-    if (userId != "63077e2398cccf6458bc3336")
-      return setError("Only Admin can edit");
-    route.push("/edit-product/" + product._id);
-  };
-
-  const AddToCartHandaler = (event) => {
-    event.preventDefault();
-
+  const AddToCartHandaler = useCallback(() => {
     if (qty.current.value < 1) {
       return dispatch(
         Popup({ error: true, message: "Qunatity cannot be less than 1" })
@@ -75,7 +72,7 @@ const ProductDetail = () => {
         }
       })
       .catch();
-  };
+  }, [localStorage.getItem("token"), product]);
 
   useEffect(() => {
     fetchProduct();
@@ -103,7 +100,14 @@ const ProductDetail = () => {
               Add to Cart
             </button>
           </div>
-          <button id={classes.btn2} onClick={EditHandaler}>
+          <button
+            id={classes.btn2}
+            onClick={() => {
+              if (userId != "63077e2398cccf6458bc3336")
+                return setError("Only Admin can edit");
+              route.push("/edit-product/" + product._id);
+            }}
+          >
             Edit Product Details
           </button>
         </div>
@@ -112,4 +116,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default React.memo(ProductDetail);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ShowEachProduct from "./showEachProduct";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,17 +6,12 @@ import { useDispatch } from "react-redux";
 import { Popup } from "../../store/popup-slice";
 import classes from "./products.module.css";
 
-const ShowProduct = (props) => {
+const ShowProduct = () => {
   const [products, setProducts] = useState({ products: [] });
   const category = useRef("");
   const route = useRouter();
   const dispatch = useDispatch();
-
   const array = [1, 2, 3, 4];
-
-  const FilterChangeHandaler = () => {
-    fetchProduct();
-  };
 
   const fetchProduct = useCallback(() => {
     fetch(
@@ -36,7 +31,7 @@ const ShowProduct = (props) => {
         }
       })
       .catch((err) => console.log(err));
-  }, [+route.query.page]);
+  }, [route.query.page]);
 
   useEffect(() => {
     if (route.query.page === undefined) return;
@@ -48,7 +43,9 @@ const ShowProduct = (props) => {
       <div id={classes.filter}>
         <h3>Filter</h3>
         <select
-          onChange={FilterChangeHandaler}
+          onChange={() => {
+            fetchProduct();
+          }}
           ref={category}
           name="selectList"
           defaultValue={""}
@@ -98,4 +95,4 @@ const ShowProduct = (props) => {
     </div>
   );
 };
-export default ShowProduct;
+export default React.memo(ShowProduct);

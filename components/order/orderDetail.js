@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Popup } from "../../store/popup-slice";
 import classes from "./orderDetails.module.css";
@@ -9,7 +9,7 @@ const OrderDetail = () => {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  const fetchOrder = () => {
+  const fetchOrder = useCallback(() => {
     fetch(`${process.env.URL}/orderDetails/${route.query.orderId}`, {
       headers: {
         Authorization: "bearer " + localStorage.getItem("token"),
@@ -27,7 +27,7 @@ const OrderDetail = () => {
         }
       })
       .catch();
-  };
+  }, [route.query.orderId, localStorage.getItem("token")]);
 
   useEffect(() => {
     if (route.query.orderId === undefined) return;
@@ -70,4 +70,4 @@ const OrderDetail = () => {
     </div>
   );
 };
-export default OrderDetail;
+export default React.memo(OrderDetail);
